@@ -11,9 +11,10 @@ Note that in my company we use term technology for these identifiers so in the f
 # WARNING
 I am not liable for any unwanted changes caused by this script, use at your own risk. The script designed
 to delete stuff after all. That being said, under the following conditions the script is relatively safe to use:
+
 1. Your project is under revision control.
 2. You manually review all of the modification before committing
-3. You search the code base for #0# and #1# before committing and modify appropriately! #0# and #1# is what script uses as temporary replacement of the removed technology and for complicated expression it sometimes fails to remove it. You can just replace them with 0 and 1 respectively but I rather simplify the expression.
+3. You search the code base for #0# and #1# before committing and modify appropriately! `#0#` and `#1#` is what script uses as temporary replacement of the removed technology and for complicated expression it sometimes fails to remove it. You can just replace them with 0 and 1 respectively but I rather simplify the expression.
 
 # Usage
 ```
@@ -43,11 +44,10 @@ resolved to bare minimum (such as `#if #0#`).
 
 Coming later.
 
-# TODO list
-In no particular order:
-1. Improve speed of walking through directory tree
-2. Improve ExpressionSimplifier class to be smarter (possibly turn it into full blown parser of directives)
-3. Improve FSM classes to allow nested states and better handle various scenarios 
-4. Refactoring such as use available FSM implementation
-5. Test coverage
+# TODO list in no particular order
+* Improve speed of walking through directory tree
+* Improve ExpressionSimplifier class to be smarter (possibly turn it into full blown parser of directives)
+* Improve FSM classes to allow nested states and better handle various scenarios 
+* Refactoring such as use available FSM implementation
+* Test coverage
 
