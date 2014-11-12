@@ -34,8 +34,7 @@ python removeTechnologyImproved.py X:\projectA\src\ _YOUR_TECH 1
 
 # Description
 
-This script removes a specified technology, which is defined as always 1 or always 0 (specified by parameter <remove or remove !> ), 
-from c++ files in a specified folder. It can handle simple and nested `#if,#else,#elif,#endif,!,#ifdef,#ifndef` directives, limited number of `&&` or `||` and it ignores one line comments.
+This script removes a specified technology, which is defined as always 1 or always 0 (specified by parameter `<remove or remove !>` ), from c++ files in a specified folder. It can handle simple and nested `#if,#else,#elif,#endif,!,#ifdef,#ifndef` directives, limited number of `&&` or `||` and it ignores one line comments.
 It works in several stages. First it replaces technology with `#0#` or `#1#`, then tries to simplify
 the whole directive expressions and finally going through code a removing blocks and directives
 resolved to bare minimum (such as `#if #0#`).
