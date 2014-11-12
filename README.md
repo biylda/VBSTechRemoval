@@ -7,6 +7,7 @@ Python script for removing specific type of identifiers created by #define direc
 ```
 Note that in my company we use term technology for these identifiers so in the following text I will be calling them that.
 
+Similar to what tools such as Coan or Unidef are doing but written in python and not simplifying anything other than the specified technology.
 
 # WARNING
 I am not liable for any unwanted changes caused by this script, use at your own risk. The script designed
