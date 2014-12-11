@@ -1,6 +1,7 @@
 import re
 import pyparsing as pp
 
+# Entry class responsible for replacing all mentions of the technology for #0#/#1# 
 class TechRemover:    
     def __init__(self, code, technology, alwaysTrue, log):
         self.code = code
@@ -10,18 +11,31 @@ class TechRemover:
         self.anyChange = False
         self.simplifier = ExpressionSimplifier()
         self.rep = re.compile(r"^(?P<start>[ \t]*#[ \t]*(?:el)?if(?:n)?(?:def)?[ \t]+)(?P<inside>[^/\n]+)(?P<end>[ \t]*(?://.*)?\n)$")
+        
+        #defined and not defined
+        self.rgx_notdefined = re.compile('![ \t]*defined[ \t]+'+self.tech+'[ \t]')
+        self.rgx_notdefined_paran = re.compile('![ \t]*defined[ \t]*\('+self.tech+'\)[ \t]')
+        self.rgx_defined = re.compile('defined[ \t]+'+self.tech+'[ \t]')
+        self.rgx_defined_param = re.compile('defined[ \t]*\('+self.tech+'\)[ \t]')
+        
+        #normal
+        self.rgx_not_normal = re.compile('![ \t]*'+self.tech+'[ \t]')
+        self.rgx_normal = re.compile('[ \t]+'+self.tech+'[ \t]')
+        self.rgx_normal_start = re.compile('^'+self.tech+'[ \t]')
     
-    def replaceTechInside(self,text):    
+    def replaceTechInside(self,text):
+        #add dummy space at the end to more easily deal with endings and simplify the regexes
         dummy = text+' '
         #defined and not defined
-        dummy = re.sub('![ \t]*defined '+self.tech+' ?', ' #%d# '%(not self.alwaysTrue), dummy)
-        dummy = re.sub('![ \t]defined ?\('+self.tech+'\)', ' #%d# '%(not self.alwaysTrue), dummy)
-        dummy = re.sub('defined '+self.tech+' ?', ' #%d# '%(self.alwaysTrue), dummy)
-        dummy = re.sub('defined ?\('+self.tech+'\)', ' #%d# '%(self.alwaysTrue), dummy)
+        dummy = self.rgx_notdefined.sub(' #%d# '%(not self.alwaysTrue), dummy)
+        dummy = self.rgx_notdefined_paran.sub(' #%d# '%(not self.alwaysTrue), dummy)
+        dummy = self.rgx_defined.sub(' #%d# '%(self.alwaysTrue), dummy)
+        dummy = self.rgx_defined_param.sub(' #%d# '%(self.alwaysTrue), dummy)
         #normal
-        dummy = re.sub('![ \t]*'+self.tech+' ', ' #%d# '%(not self.alwaysTrue), dummy)
-        dummy = re.sub('[ \t]+'+self.tech+'[ \t]', ' #%d# '%(self.alwaysTrue), dummy)
-        dummy = re.sub('[ \t]+'+self.tech+'\n', ' #%d# \n'%(self.alwaysTrue), dummy)
+        dummy = self.rgx_not_normal.sub(' #%d# '%(not self.alwaysTrue), dummy)
+        dummy = self.rgx_normal.sub(' #%d# '%(self.alwaysTrue), dummy)
+        dummy = self.rgx_normal_start.sub('#%d# '%(self.alwaysTrue), dummy)
+        #remove the dummy space
         return dummy[:-1]
     
     def replaceAllMentions(self,cline,lnumber):
@@ -30,7 +44,7 @@ class TechRemover:
             start = findifelif.group('start')
             insides = findifelif.group('inside')
             end = '' if findifelif.group('end') is None else findifelif.group('end')
-            if(not self.log is None): self.log.write('Found (el)if(def) on line %d replacing tech:%s' % (lnumber,cline))        
+            if(not self.log is None): self.log.write('Found (el)if(def) on line %d replacing tech:%s\n\tinsides:%s' % (lnumber,cline,insides))        
             changed = self.replaceTechInside(insides)
             if(changed!=insides):
                 self.anyChange = True
@@ -42,15 +56,17 @@ class TechRemover:
     
     def process(self):
         for lnumber,cline in enumerate(self.code):
+            #replace and simplify
             self.replaceAllMentions(cline,lnumber)
         if(self.anyChange):
+            #clean
             cleaner = RemovedTechCleaner(self.code,self.log)
             cleaner.process()
             if(cleaner.anyChange):
                 self.code = cleaner.newCode
-
+                
+#Class responsible for simplifying conditions and hopefully removing #0# and #1# in the process
 class ExpressionSimplifier:
-
     def __init__(self):
         name = pp.Regex(r"(!?[_a-zA-z]\w*[ \t]*(?:[<>]=?[ \t]*\d+)?)|(?:defined)|[01]")
         self.grammar = pp.Literal('#0#') | pp.Literal('#1#') | name | pp.Literal('&&') | pp.Literal('||') | pp.Literal("!")
@@ -122,7 +138,7 @@ class ExpressionSimplifier:
                 
         return self.printResult(simpl[0],False)
 
-        
+       
 class FSMDefaultState:
     def __init__(self):
         self.ifzero = re.compile(r"^[ \t]*#[ \t]*if(?:def)? +#0#[ \t]*(?P<end>(?://.*)?\n)$")
@@ -239,7 +255,8 @@ class FSMRemoveUntilElseIf(FSMDefaultState):
         
     def getName(self):
         return 'removeuntilelseif'
-        
+ 
+#Class responsible for cleaning-up code of conditions with only #0# or #1# 
 class RemovedTechCleaner:
     def __init__(self, code, log):
         self.code = code
@@ -266,9 +283,4 @@ class RemovedTechCleaner:
                 self.anyChange = True
                 self.newCode.append(processed[0])
             else:
-                self.newCode.append(cline)            
-            
-                
-        
-        
-        
+                self.newCode.append(cline)     

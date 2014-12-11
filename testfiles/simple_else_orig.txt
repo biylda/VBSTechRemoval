@@ -1,0 +1,5 @@
+#if _SOME_TECH
+    doSomething();
+#else
+    doSomethingElse()
+#endif

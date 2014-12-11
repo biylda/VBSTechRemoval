@@ -1,0 +1,11 @@
+#ifdef _SOME_TECH
+    doSomething();
+#endif
+
+#if defined(_SOME_TECH)
+    doSomething();
+#endif
+
+#if defined _SOME_TECH
+    doSomething();
+#endif
