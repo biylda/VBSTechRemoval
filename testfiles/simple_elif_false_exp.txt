@@ -1,0 +1,5 @@
+#if _OTHER_TECH
+    doSomethingElse();
+#else
+    doSomethingElseElse();
+#endif

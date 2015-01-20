@@ -47,11 +47,11 @@ class BareMinimumTest(unittest.TestCase):
     def test_simple_else_false(self):
         self.common_test_procedure('testfiles/simple_else_orig.txt','testfiles/simple_else_false_exp.txt','_SOME_TECH',False)
     def test_simple_elif_true(self):
-        self.common_test_procedure('testfiles/simple_else_orig.txt','testfiles/simple_else_true_exp.txt','_SOME_TECH',True)
+        self.common_test_procedure('testfiles/simple_elif_orig.txt','testfiles/simple_elif_true_exp.txt','_SOME_TECH',True)
     def test_simple_elif_false(self):
-        self.common_test_procedure('testfiles/simple_else_orig.txt','testfiles/simple_else_false_exp.txt','_SOME_TECH',False)
-    #def test_unexpected_whitespaces(self): 
-    #    self.common_test_procedure('testfiles/simple_ifdefdefined_truefalse_orig.txt','testfiles/simple_ifdefdefined_false_exp.txt','_SOME_TECH',False)
+        self.common_test_procedure('testfiles/simple_elif_orig.txt','testfiles/simple_elif_false_exp.txt','_SOME_TECH',False)
+    def test_unexpected_whitespaces(self): 
+        self.common_test_procedure('testfiles/simple_whitespaces_orig.txt','testfiles/simple_whitespaces_exp.txt','_SOME_TECH',True)
 if __name__ == '__main__':
     unittest.main()
         

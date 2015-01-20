@@ -16,7 +16,7 @@ class TechRemover:
         self.rgx_notdefined = re.compile('![ \t]*defined[ \t]+'+self.tech+'[ \t]')
         self.rgx_notdefined_paran = re.compile('![ \t]*defined[ \t]*\('+self.tech+'\)[ \t]')
         self.rgx_defined = re.compile('defined[ \t]+'+self.tech+'[ \t]')
-        self.rgx_defined_param = re.compile('defined[ \t]*\('+self.tech+'\)[ \t]')
+        self.rgx_defined_param = re.compile('defined[ \t]*\([ \t]*'+self.tech+'[ \t]*\)[ \t]')
         
         #normal
         self.rgx_not_normal = re.compile('![ \t]*'+self.tech+'[ \t]')

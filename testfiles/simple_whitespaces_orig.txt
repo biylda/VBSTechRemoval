@@ -1,0 +1,19 @@
+#   ifndef   _SOME_TECH              
+    doSomething();
+#   endif
+
+# if  !  defined     _SOME_TECH
+    doSomething();
+# endif
+
+#if   _SOME_TECH
+    doSomething();
+#   elif   _OTHER_TECH
+    doSomethingElse();
+#   else
+    doSomethingElseElse();
+# endif
+
+# if defined (      _SOME_TECH  )
+    doSomething();
+#endif

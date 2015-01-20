@@ -40,8 +40,8 @@ vaclav.honzik@bisimulations.com 2014
 #List all C++ files (.cpp or .hpp or .h or .hlsl) from path or fail if no present
 def get_files(path):
     cfiles = []
-    cfilesregex = re.compile('^.*\.(?:[ch](pp)?)|(?:hlsl)$')
-    for root, subFolders, files in os.walk(path):
+    cfilesregex = re.compile('^.*\.(?:[ch](pp)?$)|(?:hlsl$)')
+    for root, subFolders, files in os.walk(path,followlinks=True):
          for filename in files:
             if(cfilesregex.search(filename)!=None) : cfiles.append(os.path.join(root,filename))
             
@@ -88,16 +88,12 @@ def main():
         files = get_files(path)
         
         os.system('cls')
-        with open('VBSTechRemoval.log','a') as log:            
-            print('Starting the processing. %d' % len(files))
-            log.write('Starting the processing. %d\n' % len(files))
-            for idx,f in enumerate(files):
-                print('Processing file %d out of %d: %s' % (idx+1,len(files),f))
-                log.write('Processing file %d out of %d: %s\n' % (idx+1,len(files),f))
-                process_file(f,technologyName,alwaysTrue,None)
+        print('Starting the processing. %d' % len(files))
+        for idx,f in enumerate(files):
+            print('Processing file %d out of %d: %s' % (idx+1,len(files),f))
+            process_file(f,technologyName,alwaysTrue,None)
 
-            print('Success: Processing finished')
-            log.write('Success: Processing finished\n')
+        print('Success: Processing finished')
 
 if __name__ == '__main__':            
     main()
