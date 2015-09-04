@@ -1,0 +1,71 @@
+#if _SUPER_RELEASE
+  foo();
+#else
+  bar();
+#endif
+
+#if _SUPER_RELEASE
+  foo();
+#else
+  bar();
+#endif
+
+#if _SUPER_RELEASE
+  foo();
+#else
+  bar();
+#endif
+
+#if _SUPER_RELEASE
+  foo();
+#elif _TECH
+  moo();
+#else
+  bar();
+#endif
+
+#if _SUPER_RELEASE
+  foo();
+#elif _TECH
+  moo1();
+#else
+  bar();
+#endif
+
+-------
+
+#if _SUPER_RELEASE
+  foo();
+#endif
+
+#if _SUPER_RELEASE
+  foo();
+#else
+  goo();
+#endif
+
+#if _SUPER_RELEASE
+  foo();
+#elif _TECH
+  moo();
+#else
+  goo();
+#endif
+
+#if _SUPER_RELEASE
+  foo();
+#elif _TECH
+  moo();
+#else
+  goo();
+#endif
+
+#if _SUPER_RELEASE
+  foo();
+#elif _TECH
+  moo1();
+#elif _TECH
+  moo2();
+#else
+  goo();
+#endif

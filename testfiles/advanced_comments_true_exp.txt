@@ -1,0 +1,28 @@
+1
+//comment
+  foo();
+2
+/*comment*/
+  foo();
+3
+4
+5
+#if BAR
+  bar();
+#else //comment
+  foo();
+#endif
+6
+#if BAR
+  bar();
+#else /*comment*/
+  foo();
+#endif
+7
+#if BAR
+  bar();
+#endif
+8
+#if BAR
+  bar();
+#endif

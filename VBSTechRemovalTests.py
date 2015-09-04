@@ -50,8 +50,14 @@ class BareMinimumTest(unittest.TestCase):
         self.common_test_procedure('testfiles/simple_elif_orig.txt','testfiles/simple_elif_true_exp.txt','_SOME_TECH',True)
     def test_simple_elif_false(self):
         self.common_test_procedure('testfiles/simple_elif_orig.txt','testfiles/simple_elif_false_exp.txt','_SOME_TECH',False)
-    def test_unexpected_whitespaces(self): 
+    def test_unexpected_whitespaces(self):
         self.common_test_procedure('testfiles/simple_whitespaces_orig.txt','testfiles/simple_whitespaces_exp.txt','_SOME_TECH',True)
+    def test_no_spaces_or(self):
+        self.common_test_procedure('testfiles/advanced_nospace_or_orig.txt','testfiles/advanced_nospace_or_true_exp.txt','_SOME_TECH',True)
+    def test_no_spaces_and(self):
+        self.common_test_procedure('testfiles/advanced_nospace_and_orig.txt','testfiles/advanced_nospace_and_true_exp.txt','_SOME_TECH',True)
+    def test_comments(self):
+        self.common_test_procedure('testfiles/advanced_comments_orig.txt','testfiles/advanced_comments_true_exp.txt','_WIN32',True)
 if __name__ == '__main__':
     unittest.main()
         

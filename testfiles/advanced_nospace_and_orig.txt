@@ -1,0 +1,6 @@
+#if _SOME_TECH&&_OTHER_TECH
+    doSomething();
+#endif
+#if _OTHER_TECH&&_SOME_TECH
+    doSomethingElse();
+#endif

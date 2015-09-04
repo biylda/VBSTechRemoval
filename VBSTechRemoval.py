@@ -78,9 +78,14 @@ def main():
     if(debugfile=='-d'):         
         os.system('cls')
         with open('VBSTechRemovalDebug.log','w') as log:
-            log.write('Processing file %s' % path)
-            process_file(path,technologyName,alwaysTrue,log)
-            log.write('Success: Processing finished')
+            files = get_files(path)
+            os.system('cls')
+            for idx,f in enumerate(files):
+                print('Processing file %d out of %d: %s' % (idx+1,len(files),f))
+                log.write('Processing file: %s\n' % (f))
+                process_file(f,technologyName,alwaysTrue,log)
+
+            print('Success: Processing finished')
     
     else:
         os.system('cls')
