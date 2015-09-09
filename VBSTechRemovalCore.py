@@ -128,6 +128,7 @@ class ExpressionSimplifier:
         self.anyChange = False
         self.iterChange = False
         self.addParentheses = False
+        self.funResult = -1
 
     def sublistExists(self, list, sublist):
         for i in range(len(list)-len(sublist)+1):
@@ -154,17 +155,23 @@ class ExpressionSimplifier:
     def predSingleton(self,x):
         return len(x)==1 and type(x[0]) is list
     def funNotOne(self,x):
-        return self.sublistExists(x,['!','#1#'])
+        self.funResult = self.sublistExists(x,['!','#1#'])
+        return self.funResult
     def funNotZero(self,x):
-        return self.sublistExists(x,['!','#0#'])
+        self.funResult = self.sublistExists(x,['!','#0#'])
+        return self.funResult
     def funDefZero(self,x):
-        return self.sublistExists(x,['defined','#0#'])
+        self.funResult = self.sublistExists(x,['defined','#0#'])
+        return self.funResult
     def funDefOne(self,x):
-        return self.sublistExists(x,['defined','#1#'])
+        self.funResult = self.sublistExists(x,['defined','#1#'])
+        return self.funResult
     def funNDefZero(self,x):
-        return self.sublistExists(x,['!defined','#0#'])
+        self.funResult = self.sublistExists(x,['!defined','#0#'])
+        return self.funResult
     def funNDefOne(self,x):
-        return self.sublistExists(x,['!defined','#1#'])
+        self.funResult = self.sublistExists(x,['!defined','#1#'])
+        return self.funResult
     def funRightSingleton(self,x):
         pos = -1
         if pos == -1:
@@ -187,7 +194,8 @@ class ExpressionSimplifier:
             pos = self.sublistExists(x,['!defined',['#0#']])
         if pos == -1:
             pos = self.sublistExists(x,['!defined',['#1#']])
-        return pos
+        self.funResult = pos
+        return self.funResult
     def funLeftSingleton(self,x):
         pos = -1
         if pos == -1:
@@ -198,14 +206,16 @@ class ExpressionSimplifier:
             pos = self.sublistExists(x,[['#0#'],'||'])
         if pos == -1:
             pos = self.sublistExists(x,[['#1#'],'||'])
-        return pos
+        self.funResult = pos
+        return self.funResult
     def funSingleton(self,x):
         pos = -1
         if pos == -1:
             pos = self.sublistExists(x,[[['#0#']]])
         if pos == -1:
             pos = self.sublistExists(x,[[['#1#']]])
-        return pos
+        self.funResult = pos
+        return self.funResult
 
         
     def reset(self):
@@ -243,7 +253,7 @@ class ExpressionSimplifier:
         elif self.funSingleton(result) != -1:
             self.anyChange = True
             self.iterChange = True
-            pos = self.funSingleton(result)
+            pos = self.funResult
             result[pos] = result[pos][0]
         elif self.funLeftSingleton(result) == 0:
             self.anyChange = True
@@ -252,42 +262,42 @@ class ExpressionSimplifier:
         elif self.funRightSingleton(result) != -1:
             self.anyChange = True
             self.iterChange = True
-            pos = self.funRightSingleton(result)
+            pos = self.funResult
             result[pos+1] = result[pos+1][0]
         elif self.funNotOne(result) != -1:
             self.anyChange = True
             self.iterChange = True
-            pos = self.funNotOne(result)
+            pos = self.funResult
             result.pop(pos)
             result[pos] = '#0#'
         elif self.funNotZero(result) != -1:
             self.anyChange = True
             self.iterChange = True
-            pos = self.funNotZero(result)
+            pos = self.funResult
             result.pop(pos)
             result[pos] = '#1#'
         elif self.funDefOne(result) != -1:
             self.anyChange = True
             self.iterChange = True
-            pos = self.funDefOne(result)
+            pos = self.funResult
             result.pop(pos)
             result[pos] = '#1#'
         elif self.funDefZero(result) != -1:
             self.anyChange = True
             self.iterChange = True
-            pos = self.funDefZero(result)
+            pos = self.funResult
             result.pop(pos)
             result[pos] = '#0#'
         elif self.funNDefOne(result) != -1:
             self.anyChange = True
             self.iterChange = True
-            pos = self.funNDefOne(result)
+            pos = self.funResult
             result.pop(pos)
             result[pos] = '#0#'
         elif self.funNDefZero(result) != -1:
             self.anyChange = True
             self.iterChange = True
-            pos = self.funNDefZero(result)
+            pos = self.funResult
             result.pop(pos)
             result[pos] = '#1#'
         elif(self.predZeroAndSmt(result) or self.predZeroAllAnd(result)):
